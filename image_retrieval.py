@@ -9,8 +9,8 @@ import cPickle as pickle
 
 ########################
 # module: image_retrieval.py
-# Your Name
-# Your A-Number
+# Robert Epstein
+# A01092594
 ########################
 
 ap = argparse.ArgumentParser()
