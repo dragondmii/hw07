@@ -9,8 +9,8 @@ import cPickle as pickle
 
 ########################
 # module: image_index.py
-# Your Name
-# Your A-Number
+# Robert Epstein
+# A01092594
 ########################
 
 ap = argparse.ArgumentParser()
@@ -21,7 +21,9 @@ ap.add_argument('-gsl', '--gsl', required = True, help = 'gsl index file to pick
 args = vars(ap.parse_args())
 
 def generate_file_names(fnpat, rootdir):
-  # your code
+  for path, dirlist, filelist in os.walk(rootdir):
+    for file_name in fnmatch.filter(filelist, fnpat):
+      yield os.path.join(path, file_name)
   pass
 
 
@@ -43,7 +45,8 @@ def index_img(imgp):
 # compute the bgr vector for img saved in path imgp and
 # index it in BGR_INDEX under imgp.
 def index_bgr(imgp, img):
-    # your code
+    (B, G, R) = cv2.split(image)
+    print B
     pass
 
 # compute the hsv vector for img saved in path imgp and
