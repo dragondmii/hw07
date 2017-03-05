@@ -22,11 +22,9 @@ ap.add_argument('-gsl', '--gsl', required = True, help = 'gsl index file to pick
 args = vars(ap.parse_args())
 
 def generate_file_names(fnpat, rootdir):
-  print "I mk"
   for path, dirlist, filelist in os.walk(rootdir):
-    print "Things"
     for file_name in fnmatch.filter(filelist, fnpat):
-      print "I made it"
+      print file_name
       yield os.path.join(path, file_name)
   pass
 
@@ -49,7 +47,7 @@ def index_img(imgp):
 # compute the bgr vector for img saved in path imgp and
 # index it in BGR_INDEX under imgp.
 def index_bgr(imgp, img):
-    (B, G, R) = cv2.split(image)
+    (B, G, R) = cv2.split(img)
     (h, w, num_channels) = img.shape
     bval = 0;
     gval = 0;
@@ -69,13 +67,39 @@ def index_bgr(imgp, img):
 # compute the hsv vector for img saved in path imgp and
 # index it in HSV_INDEX under imgp.
 def index_hsv(imgp, img):
-    # your code
+    hsv_image =cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    (H, S, V) = cv2.split(hsv_img)
+    (h, w, num_channels) = img.shape
+    hval = 0;
+    sval = 0;
+    vval = 0;
+
+    for hight in xrange(h):
+      for width in xrange(w):
+        hval = hval+H[height][width]
+        sval = sval+S[height][width]
+        vval = vval+v[height][width]
+      output = output + (hval/w, sval/w, vval/w)
+    cv2.imshow('name', output)
+    cv2.waitKey(0)
+    HSV_INDEX[imgp] = output
     pass
 
 # compute the gsl vector for img saved in path imgp and
 # index it in GSL_INDEX under imgp.
 def index_gsl(imgp, img):
-  # your code
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    (G) = cv2.split(gray)
+    (h, w, num_channels) = img.shape
+    gbval = 0;
+    
+    for hight in xrange(h):
+      for width in xrange(w):
+        gval = gval+G[height][width]
+      output = output + (bval/w, gval/w, rval/w)
+    cv2.imshow('name', output)
+    cv2.waitKey(0)
+    GSL_INDEX[imgp] = output
   pass
 
 # index image directory imgdir
