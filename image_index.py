@@ -6,6 +6,7 @@ import sys
 import os
 import re
 import cPickle as pickle
+import fnmatch
 
 ########################
 # module: image_index.py
@@ -21,8 +22,11 @@ ap.add_argument('-gsl', '--gsl', required = True, help = 'gsl index file to pick
 args = vars(ap.parse_args())
 
 def generate_file_names(fnpat, rootdir):
+  print "I mk"
   for path, dirlist, filelist in os.walk(rootdir):
+    print "Things"
     for file_name in fnmatch.filter(filelist, fnpat):
+      print "I made it"
       yield os.path.join(path, file_name)
   pass
 
@@ -46,7 +50,20 @@ def index_img(imgp):
 # index it in BGR_INDEX under imgp.
 def index_bgr(imgp, img):
     (B, G, R) = cv2.split(image)
-    print B
+    (h, w, num_channels) = img.shape
+    bval = 0;
+    gval = 0;
+    rval = 0;
+
+    for hight in xrange(h):
+      for width in xrange(w):
+        bval = bval+B[height][width]
+        gval = gval+G[height][width]
+        rval = rval+R[height][width]
+      output = output + (bval/w, gval/w, rval/w)
+    cv2.imshow('name', output)
+    cv2.waitKey(0)
+    BGR_INDEX[imgp] = output
     pass
 
 # compute the hsv vector for img saved in path imgp and
